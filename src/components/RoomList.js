@@ -15,8 +15,7 @@ componentDidMount() {
   this.roomsRef.on('child_added', snapshot => {
     const room = snapshot.val();
     room.key = snapshot.key;
-    this.setState ({
-  rooms: this.state.rooms.concat( room )})
+    this.setState ({ rooms: this.state.rooms.concat( room )})
     });
 }
 
@@ -38,12 +37,13 @@ componentDidMount() {
           {this.state.rooms.map( (room) =>
           <section key={room.key}>{room.name}</section>)}</div>
       <form onSubmit={this.createRoom}>
-        <input type="text" value={this.state.newRoomName} onChange={(e) => this.setState({newRoomName: e.target.value})}/>
+        <input type="text" value={this.state.newRoomName} onChange={e => this.setState({newRoomName: e.target.value})}/>
         <span>Room Name</span>
         <input type="submit" />
         </form>
       </div>
     )}
+
 }
 
 
