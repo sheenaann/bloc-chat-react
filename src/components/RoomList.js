@@ -25,10 +25,14 @@ componentDidMount() {
   }
 
  createRoom = (e) => {
+   e.preventDefault();
+   if (!this.state.newRoomName){return}
        this.roomsRef.push({
        name: this.state.newRoomName
       });
+      this.setState({ newRoomName: ''});
      }
+
 
   render() {
     return(
@@ -37,9 +41,9 @@ componentDidMount() {
           {this.state.rooms.map( (room) =>
           <section key={room.key}>{room.name}</section>)}</div>
       <form onSubmit={this.createRoom}>
-        <input type="text" value={this.state.newRoomName} onChange={e => this.setState({newRoomName: e.target.value})}/>
+        <input type="text" placeholder="Room Name" value={this.state.newRoomName} onChange={e => this.setState({newRoomName: e.target.value})}/>
         <span>Room Name</span>
-        <input type="submit" />
+        <input type="submit" value="Create Room"/>
         </form>
       </div>
     )}
