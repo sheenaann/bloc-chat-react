@@ -39,9 +39,9 @@ componentDidMount() {
       <div className='sidebar'>
       <div>
           {this.state.rooms.map( (room) =>
-          <section key={room.key}>{room.name}</section>)}</div>
+          <section key={room.key} onClick={() => this.props.setRoom(room)}>{room.name}</section>)}</div>
       <form onSubmit={this.createRoom}>
-        <input type="text" placeholder="Room Name" value={this.state.newRoomName} onChange={e => this.setState({newRoomName: e.target.value})}/>
+        <input type="text" placeholder="Room Name" value={this.state.newRoomName} onChange={e => this.handleChange()}/>
         <span>Room Name</span>
         <input type="submit" value="Create Room"/>
         </form>
