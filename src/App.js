@@ -4,6 +4,7 @@ import './App.css';
 import * as firebase from 'firebase';
 import RoomList from './components/RoomList';
 import MessageList from './components/MessageList';
+import User from './components/User';
 
 // Initialize Firebase
  var config = {
@@ -16,11 +17,14 @@ import MessageList from './components/MessageList';
  };
  firebase.initializeApp(config);
 
+ var provider = new firebase.auth.GoogleAuthProvider();
+
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      activeRoom: ""
+      activeRoom: "",
+      user: 'Guest'
     };
   }
 
@@ -31,11 +35,24 @@ setRoom(room) {
   console.log(this.state.activeRoom);
   }
 
+  setUser(user) {
+    if(user) {
+      this.setState ({
+        user:user
+      });
+    } else {
+      this.setState({
+        user: 'Guest'
+      });
+    }
+  }
+
   render() {
     return (
       <div className="App">
         <RoomList firebase={firebase} setRoom={(activeRoom) => this.setRoom(activeRoom)} />
         <MessageList firebase={firebase} activeRoom={this.state.activeRoom}/>
+         <User firebase={firebase} setUser={(user) => this.setUser(user)} user={this.state.user} />
 </div>
     );
   }
