@@ -25,12 +25,11 @@ handleNewMessage(e) {
 }
 
 
-createMessage(e) {
-  e.preventDefault();
+createMessage(messageText) {
   if (!this.state.newMessage) { return }
   this.messagesRef.push({
-  content: this.state.newMessage,
-  username: this.props.user === 'Guest' ? 'Guest' :this.props.displayName,
+  content: messageText,
+  username: this.props.user ? this.props.user.displayName : "Guest",
   sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
   roomID: this.props.activeRoom
   });
@@ -43,7 +42,7 @@ return (
       <table>
           <tbody>
               {this.state.messages.map( (message) =>
-                  this.props.activeRoom == message.roomID && (
+                  this.props.activeRoom.key == message.roomID && (
                   <tr key={message.key}>
                       <td>{message.sentAt}</td>
                       <td>{message.username}:</td>
@@ -53,7 +52,7 @@ return (
               )}
           </tbody>
       </table>
-  <form onSubmit={this.createMessage(this.state.newMessage)}>
+  <form onSubmit={ (e) => { e.preventDefault(); this.createMessage(this.state.newMessageText) }}>
   <input type="text" placeholder="Type your message here" value={this.state.newMessage} onChange={e => this.handleNewMessage(e)}></input>
   <button>Send</button>
   </form>
