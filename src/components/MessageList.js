@@ -5,6 +5,7 @@ class MessageList extends Component {
     super(props);
     this.state = {
       messages: [],
+      newMessage: ''
     };
 
   this.messagesRef = this.props.firebase.database().ref('messages');
@@ -15,9 +16,27 @@ class MessageList extends Component {
       const message = snapshot.val();
       message.key = snapshot.key;
       this.setState ({
-        messages: this.state.messages.concat( message )});
+        messages: this.state.messages.concat( message )})
   });
 }
+
+handleNewMessage(e) {
+  this.setState({newMessage: e.target.value});
+}
+
+
+createMessage(e) {
+  e.preventDefault();
+  var timestamp = Date.now();
+  if (!this.state.newMessage) { return }
+  this.messagesRef.push({
+  content: this.state.newMessage,
+  sername: this.props.user === 'Guest' ? 'Guest' :this.props.displayName,
+  sentAt: timestamp,
+  roomID: this.props.activeRoom
+  });
+    this.setState({ newMessage: ''});
+    }
 
 render() {
 return (
@@ -35,6 +54,10 @@ return (
               )}
           </tbody>
       </table>
+  <form onSubmit={(e) => this.createMessage(e)}>
+  <input type="text" placeholder="Type your message here" value={this.state.newMessage} onChange={e => this.handleNewMessage(e)}></input>
+  <button>Send</button>
+  </form>
   </div>
 );
 }
