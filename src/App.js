@@ -52,7 +52,7 @@ setRoom(room) {
       <div className="App">
         <RoomList firebase={firebase} setRoom={(activeRoom) => this.setRoom(activeRoom)} />
         <MessageList firebase={firebase} activeRoom={this.state.activeRoom}/>
-         <User firebase={firebase} setUser={(user) => this.setUser(user)} user={this.state.user} />
+         <User firebase={firebase} setUser={this.setUser.bind(this)} user={this.state.user} />
 </div>
     );
   }
