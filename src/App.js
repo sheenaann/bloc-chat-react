@@ -28,12 +28,12 @@ class App extends Component {
     };
   }
 
-setRoom(room) {
-  this.setState({
-    activeRoom: room.key
-  });
-  console.log(this.state.activeRoom);
-  }
+  setRoom(room) {
+    this.setState({
+      activeRoom: room
+    });
+    console.log(this.state.activeRoom);
+    }
 
   setUser(user) {
     if(user) {
@@ -50,7 +50,7 @@ setRoom(room) {
   render() {
     return (
       <div className="App">
-        <RoomList firebase={firebase} setRoom={(activeRoom) => this.setRoom(activeRoom)} />
+        <RoomList firebase={firebase} setRoom={this.setRoom.bind(this)} />
         <MessageList firebase={firebase} activeRoom={this.state.activeRoom}/>
          <User firebase={firebase} setUser={this.setUser.bind(this)} user={this.state.user} />
 </div>
