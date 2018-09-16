@@ -38,7 +38,7 @@ class App extends Component {
   setUser(user) {
     if(user) {
       this.setState ({
-        user:user
+        user: user
       });
     } else {
       this.setState({
@@ -50,9 +50,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <RoomList firebase={firebase} setRoom={this.setRoom.bind(this)} />
-        <MessageList firebase={firebase} activeRoom={this.state.activeRoom}/>
-         <User firebase={firebase} setUser={(user) => this.setUser(user)} user={this.state.user} />
+        <RoomList firebase={firebase} setRoom={this.setRoom.bind(this)} activeRoom={this.state.activeRoom}  />
+        <MessageList firebase={firebase} activeRoom={this.state.activeRoom} user={this.state.user}/>
+         <User firebase={firebase} setUser={this.setUser.bind(this)} user={this.state.user} />
 </div>
     );
   }

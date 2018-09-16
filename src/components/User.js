@@ -26,7 +26,7 @@ render () {
     <div className='auth'>
     <button className="sign-in" value="sign-in" onClick={() =>this.handleSignIn()}>Sign in with Google</button>
     <button className="sign-out" value="sign-out" onClick={() =>this.handleSignOut()}>Sign out</button>
-    <p>Current user: {this.props.user === 'Guest' ? 'Guest' : this.props.user.displayName}</p>
+    <p>Current user: {this.props.user ? this.props.user : "Guest"}</p>
     </div>
   )}
 }

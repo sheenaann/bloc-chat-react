@@ -29,12 +29,23 @@ createMessage(messageText) {
   if (!this.state.newMessage) { return }
   this.messagesRef.push({
   content: messageText,
-  username: this.props.user ? this.props.user.displayName : "Guest",
+username: this.props.user ? this.props.user : "Guest",
   sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
   roomID: this.props.activeRoom.key,
   });
     this.setState({ newMessage: ''});
     }
+
+formatTime(time) {
+    var date = new Date(time);
+    var minutes = date.getMinutes();
+    if(minutes < 10) {
+      minutes = '0' + minutes;
+    }
+    if( this.hours >12 )
+    { this.hours = this.hours - 12; }
+    return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + (date.getHours() % 12)+ ":" + minutes;
+  }
 
 render() {
 return (
@@ -44,7 +55,7 @@ return (
               {this.state.messages.map( (message) =>
                   this.props.activeRoom.key == message.roomID && (
                   <tr key={message.key}>
-                      <td>{message.sentAt}</td>
+                      <td>{this.formatTime(message.sentAt)}</td>
                       <td>{message.username}:</td>
                       <td>{message.content}</td>
                   </tr>
