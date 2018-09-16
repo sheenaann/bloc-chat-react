@@ -31,7 +31,7 @@ createMessage(messageText) {
   content: messageText,
   username: this.props.user ? this.props.user.displayName : "Guest",
   sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
-  roomID: this.props.activeRoom
+  roomID: this.props.activeRoom.key,
   });
     this.setState({ newMessage: ''});
     }
@@ -52,7 +52,7 @@ return (
               )}
           </tbody>
       </table>
-  <form onSubmit={ (e) => { e.preventDefault(); this.createMessage(this.state.newMessageText) }}>
+  <form onSubmit={ (e) => { e.preventDefault(); this.createMessage(this.state.newMessage) }}>
   <input type="text" placeholder="Type your message here" value={this.state.newMessage} onChange={e => this.handleNewMessage(e)}></input>
   <button>Send</button>
   </form>
