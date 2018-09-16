@@ -29,7 +29,7 @@ createMessage(messageText) {
   if (!this.state.newMessage) { return }
   this.messagesRef.push({
   content: messageText,
-username: this.props.user ? this.props.user : "Guest",
+username: this.props.user.displayName ? this.props.user.displayName : "Guest",
   sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
   roomID: this.props.activeRoom.key,
   });

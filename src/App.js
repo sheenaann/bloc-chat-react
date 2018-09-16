@@ -17,7 +17,6 @@ import User from './components/User';
  };
  firebase.initializeApp(config);
 
- var provider = new firebase.auth.GoogleAuthProvider();
 
 class App extends Component {
   constructor(props){
@@ -52,7 +51,7 @@ class App extends Component {
       <div className="App">
         <RoomList firebase={firebase} setRoom={this.setRoom.bind(this)} activeRoom={this.state.activeRoom}  />
         <MessageList firebase={firebase} activeRoom={this.state.activeRoom} user={this.state.user}/>
-         <User firebase={firebase} setUser={this.setUser.bind(this)} user={this.state.user} />
+         <User firebase={firebase} setUser={this.setUser.bind(this)} user={this.state.user.displayName} />
 </div>
     );
   }
