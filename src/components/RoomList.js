@@ -40,10 +40,11 @@ componentDidMount() {
       <div>
           {this.state.rooms.map( (room) =>
           <section key={room.key} onClick={() => this.props.setRoom(room)}>{room.name}</section>)}</div>
-      <form onSubmit={this.createRoom}>
-        <input type="text" placeholder="Room Name" value={this.state.newRoomName} onChange={e => this.handleChange()}/>
+      <form onSubmit={(e) => this.createRoom(e)}>
+        <input type="text" placeholder="Room Name" value={this.state.newRoomName} onChange={e => this.handleChange(e)}/>
         <span>Room Name</span>
         <input type="submit" value="Create Room"/>
+        <p>Current Room: {this.props.activeRoom.name ? this.props.activeRoom.name : "No room selected" }</p>
         </form>
       </div>
     )}
