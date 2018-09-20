@@ -15,8 +15,13 @@ componentDidMount() {
   this.roomsRef.on('child_added', snapshot => {
     const room = snapshot.val();
     room.key = snapshot.key;
+
     this.setState ({ rooms: this.state.rooms.concat( room )})
     });
+
+  this.roomsRef.on('child_removed', snapshot => {
+    this.setState({ rooms: this.state.rooms.filter(room => room.key !== snapshot.key) });
+  })
 }
 
   handleChange(e) {
@@ -33,13 +38,23 @@ componentDidMount() {
       this.setState({ newRoomName: ''});
      }
 
+  onDelete (room) {
+    this.props.firebase.database().ref(`rooms/${room.key}`).remove()
+
+    console.log(room);
+  }
+
 
   render() {
     return(
       <div className='sidebar'>
       <div>
           {this.state.rooms.map( (room) =>
-          <section key={room.key} onClick={() => this.props.setRoom(room)}>{room.name}</section>)}</div>
+          <section key={room.key} onClick={() => this.props.setRoom(room)}>{room.name}
+            <button onClick={() => this.onDelete(room)}>Delete</button>
+            <input type='text' placeholder="Rename Room"></input>
+            <button>Submit</button>
+         </section>)}</div>
       <form onSubmit={(e) => this.createRoom(e)}>
         <input type="text" placeholder="Room Name" value={this.state.newRoomName} onChange={e => this.handleChange(e)}/>
         <span>Room Name</span>
