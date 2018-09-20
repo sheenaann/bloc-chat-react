@@ -53,7 +53,7 @@ componentDidMount() {
   }
 
   onRename(room){
-  this.props.firebase.database().ref(`rooms/${room.key}`).set({
+  this.props.firebase.database().ref(`rooms/${room.key}`).update({
     name: this.state.updatedRoomName
   });
 }
@@ -67,8 +67,8 @@ componentDidMount() {
           {this.state.rooms.map( (room) =>
           <section key={room.key} onClick={() => this.props.setRoom(room)}>{room.name}
             <button onClick={() => this.onDelete(room)}>Delete</button>
-            <input type='text' placeholder="Rename Room"></input>
-            <button value={this.state.updatedRoomName} onChange={e => this.handleNameChange(e)} onClick={() =>this.onRename(room)}>Submit</button>
+            <input type='text' placeholder="Rename Room" value={this.state.updatedRoomName} onChange={e => this.handleNameChange(e)}></input>
+            <button onChange={e => this.handleNameChange(e)} onClick={() =>this.onRename(room)}>Submit</button>
          </section>)}</div>
       <form onSubmit={(e) => this.createRoom(e)}>
         <input type="text" placeholder="Room Name" value={this.state.newRoomName} onChange={e => this.handleChange(e)}/>
