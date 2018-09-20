@@ -6,6 +6,7 @@ class RoomList extends Component {
     this.state = {
     rooms: [],
     newRoomName: '',
+    updatedRoomName: '',
   };
 
   this.roomsRef = this.props.firebase.database().ref('rooms');
@@ -20,8 +21,12 @@ componentDidMount() {
     });
 
   this.roomsRef.on('child_removed', snapshot => {
-    this.setState({ rooms: this.state.rooms.filter(room => room.key !== snapshot.key) });
-  })
+    this.setState({ rooms: this.state.rooms.filter(room => room.key !== snapshot.key) })
+  });
+
+  this.roomsRef.on('child_changed', snapshot => {
+    console.log(this.state.rooms);
+  });
 }
 
   handleChange(e) {
@@ -40,9 +45,19 @@ componentDidMount() {
 
   onDelete (room) {
     this.props.firebase.database().ref(`rooms/${room.key}`).remove()
-
     console.log(room);
   }
+
+  handleNameChange(e) {
+    this.setState({updatedRoomName: e.target.value});
+  }
+
+  onRename(room){
+  this.props.firebase.database().ref(`rooms/${room.key}`).set({
+    name: this.state.updatedRoomName
+  });
+}
+
 
 
   render() {
@@ -53,7 +68,7 @@ componentDidMount() {
           <section key={room.key} onClick={() => this.props.setRoom(room)}>{room.name}
             <button onClick={() => this.onDelete(room)}>Delete</button>
             <input type='text' placeholder="Rename Room"></input>
-            <button>Submit</button>
+            <button value={this.state.updatedRoomName} onChange={e => this.handleNameChange(e)} onClick={() =>this.onRename(room)}>Submit</button>
          </section>)}</div>
       <form onSubmit={(e) => this.createRoom(e)}>
         <input type="text" placeholder="Room Name" value={this.state.newRoomName} onChange={e => this.handleChange(e)}/>
