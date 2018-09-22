@@ -25,7 +25,8 @@ componentDidMount() {
   });
 
   this.roomsRef.on('child_changed', snapshot => {
-    console.log(this.state.rooms);
+    const changedRoom = snapshot.val();
+    this.setState({ rooms: this.state.rooms.concat(changedRoom) })
   });
 }
 
@@ -66,10 +67,10 @@ componentDidMount() {
       <div>
           {this.state.rooms.map( (room) =>
           <section key={room.key} onClick={() => this.props.setRoom(room)}>{room.name}
-            <button onClick={() => this.onDelete(room)}>Delete</button>
+            <button onClick={() => this.onDelete(room)}>Delete</button></section>)}
             <input type='text' placeholder="Rename Room" value={this.state.updatedRoomName} onChange={e => this.handleNameChange(e)}></input>
-            <button onChange={e => this.handleNameChange(e)} onClick={() =>this.onRename(room)}>Submit</button>
-         </section>)}</div>
+            <button onClick={() =>this.onRename(this.props.activeRoom)}>Submit</button>
+         </div>
       <form onSubmit={(e) => this.createRoom(e)}>
         <input type="text" placeholder="Room Name" value={this.state.newRoomName} onChange={e => this.handleChange(e)}/>
         <span>Room Name</span>
