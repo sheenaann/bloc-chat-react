@@ -11,12 +11,17 @@ class MessageList extends Component {
   this.messagesRef = this.props.firebase.database().ref('messages');
 };
 
+
+
   componentDidMount() {
   this.messagesRef.on('child_added', snapshot => {
       const message = snapshot.val();
       message.key = snapshot.key;
       this.setState ({
         messages: this.state.messages.concat( message )})
+  });
+  this.messagesRef.on('child_removed', snapshot => {
+    this.setState({ messages: this.state.messages.filter(message => message.key !== snapshot.key) })
   });
 }
 
@@ -47,6 +52,11 @@ formatTime(time) {
     return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + (date.getHours() % 12)+ ":" + minutes;
   }
 
+  deleteMessage(message) {
+    this.props.firebase.database().ref(`messages/${message.key}`).remove()
+    console.log(message);
+  }
+
 render() {
 return (
   <div>
@@ -58,6 +68,7 @@ return (
                       <td>{this.formatTime(message.sentAt)}</td>
                       <td>{message.username}:</td>
                       <td>{message.content}</td>
+                      <td><button onClick={() => this.deleteMessage(message)}>Delete</button></td>
                   </tr>
                   )
               )}
